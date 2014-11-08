@@ -1,0 +1,33 @@
+- params[:class] = "servers carnival-list"
+%ul.costume{params}
+  - if @records.size == 0
+    .no-records
+      %h1 Não há posts
+  - else
+    - @records.each do |post|
+      %li{class: "carnival-list-item #{post.status}", id: "post_#{post.id}"}
+        .title
+          .label
+            Title
+          = post.title
+        .body
+          .label
+            Body
+          = post.body
+        .category
+          .label
+            Category
+          = post.category.name
+        .tags
+          .label
+            Tags
+          = post.tags.map{|t| t.name}.join(", ")
+
+        .actions
+          .label
+            Actions
+          = link_to "Show", post_path(post.id)
+          = link_to "Editar", edit_post_path(post.id)
+          = link_to "Excluir", post_path(post.id, method: :delete)
+          = link_to "Publicar", publish_post_path(post.id) if post.draft?
+          = link_to "Arquivar", archive_post_path(post.id) if post.published?
